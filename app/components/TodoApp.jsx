@@ -1,6 +1,6 @@
-var React = require('react');
-var TodoList = require('TodoList');
-var AddTodo = require('AddTodo');
+var React      = require('react');
+var TodoList   = require('TodoList');
+var AddTodo    = require('AddTodo');
 var TodoSearch = require('TodoSearch');
 
 var TodoApp = React.createClass({
