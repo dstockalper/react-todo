@@ -24,7 +24,8 @@ module.exports = {
     root: __dirname,
     modulesDirectories: [
       'node_modules',
-      './app/components' // automatically create aliases for component modules
+      './app/components', // automatically create aliases for component modules
+      './app/api'
     ],
     alias: { // pick names for our components and tell webpack where to find those components...enables shorter require('') paths
     applicationStyles: 'app/styles/app.scss'
