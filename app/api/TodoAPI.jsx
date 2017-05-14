@@ -20,6 +20,35 @@ module.exports = {
     }
 
     return $.isArray(todos) ? todos : [];
-
   },
+  filterTodos: function(todos, showCompleted, searchText) {
+    var filteredTodos = todos;
+
+    // Filter by showCompleted
+    filteredTodos = filteredTodos.filter((todo) => { // Filter is built-in array method.  Takes a callback fcn and item is kept in array if return true;
+      return !todo.completed || showCompleted;
+    });
+
+    // Filter by searchText
+    filteredTodos = filteredTodos.filter((todo) => {
+      var text = todo.text.toLowerCase();
+      if(searchText.length === 0 || text.indexOf(searchText.toLowerCase()) > -1) {
+        return true;
+      }
+    });
+
+    // Sort by completed
+    filteredTodos.sort((a, b) => { // Sort is a built-in array method that works in place
+      // -1 to tell sort method that a should come before b, 1 to tell sort that b before a, 0 for neither
+      if(!a.completed && b.completed) {
+        return -1;
+      } else if(a.completed && !b.completed) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
+    return filteredTodos;
+  }
 }
