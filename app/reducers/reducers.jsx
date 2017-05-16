@@ -1,5 +1,7 @@
-var uuid = require('uuid');
+var uuid   = require('uuid');
 var moment = require('moment');
+
+// Reducers take in the current state and an action, and return a resulting state
 
 export var searchTextReducer = (state='', action) => {
   switch(action.type) {
@@ -41,6 +43,8 @@ export var todosReducer = (state = [], action) => {
             completed: nextCompleted,
             completedAt: nextCompleted ? moment().unix() : undefined
           };
+        } else {
+          return todo;
         }
       });
 

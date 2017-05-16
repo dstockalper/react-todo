@@ -1,11 +1,13 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
-var expect = require('expect');
-var $ = require('jQuery');
+var React      = require('react');
+var ReactDOM   = require('react-dom');
+var {Provider} = require('react-redux');
+var TestUtils  = require('react-addons-test-utils');
+var expect     = require('expect');
+var $          = require('jQuery');
 
-var TodoList = require('TodoList');
-var Todo = require('Todo');
+import {configure} from 'configureStore';
+import ConnectedTodoList, {TodoList} from 'TodoList';
+import ConnectedTodo, {Todo} from 'Todo';
 
 describe('TodoList', () => {
   it('should exist', () => {
@@ -16,15 +18,32 @@ describe('TodoList', () => {
     var todos = [
       {
         id: 1,
-        text: 'Do something'
+        text: 'Do something',
+        completed: false,
+        createdAt: 500,
+        completedAt: undefined
       },
       {
         id: 2,
-        text: 'Check mail'
+        text: 'Check mail',
+        completed: false,
+        createdAt: 500,
+        completedAt: undefined
       }
     ];
-    var todoList        = TestUtils.renderIntoDocument(<TodoList todos = {todos}/>);
-    var todosComponents = TestUtils.scryRenderedComponentsWithType(todoList, Todo);  // How many of a given component are rendered under a separte component
+
+    var store = configure({
+      todos // Creat an initial state
+    });
+
+    var provider = TestUtils.renderIntoDocument(
+      <Provider store={store}>
+        <ConnectedTodoList/>
+      </Provider>
+    );
+
+    var todoList        = TestUtils.scryRenderedComponentsWithType(provider, ConnectedTodoList)[0];
+    var todosComponents = TestUtils.scryRenderedComponentsWithType(todoList, ConnectedTodo);  // How many of a given component are rendered under a separte component
 
     expect(todosComponents.length).toBe(todos.length);
   });
