@@ -27,7 +27,7 @@ module.exports = {
       './app/components', // automatically create aliases for component modules
       './app/api'
     ],
-    alias: { // pick names for our components and tell webpack where to find those components...enables shorter require('') paths
+    alias: { // pick names for our components and tell webpack where to find those components...enables shorter require('') or import from paths
       applicationStyles: 'app/styles/app.scss',
       actions: 'app/actions/actions.jsx',
       reducers: 'app/reducers/reducers.jsx',
