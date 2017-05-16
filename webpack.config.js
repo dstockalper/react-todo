@@ -28,7 +28,8 @@ module.exports = {
       './app/api'
     ],
     alias: { // pick names for our components and tell webpack where to find those components...enables shorter require('') paths
-    applicationStyles: 'app/styles/app.scss'
+    applicationStyles: 'app/styles/app.scss',
+    actions: 'app/actions/actions.jsx'
 
     },
     extensions: ['', '.js', '.jsx'] // file extensions to recognize
