@@ -1,5 +1,5 @@
 var webpack = require('webpack');
-var path = require('path');
+var path    = require('path');
 
 module.exports = {
   entry: [ // Where webpack starts compiling the bundle file; the first file webpack looks in for required modules and components, and adds them to bundle.js
@@ -16,9 +16,9 @@ module.exports = {
       'jQuery': 'jquery'
     })
   ],
-  output: {
+  output: { // location and name of file to be created
     path: __dirname,
-    filename: './public/bundle.js' // location and name of file to be created
+    filename: './public/bundle.js'
   },
   resolve: {
     root: __dirname,
@@ -36,9 +36,9 @@ module.exports = {
     extensions: ['', '.js', '.jsx'] // file extensions to recognize
   },
   module: {
-    loaders: [
+    loaders: [ // Can be used with preprocessors (SASS, LESS) or transpilers (babel)
       {
-        loader: 'babel-loader',
+        loader: 'babel-loader', // Converts ES6
         query: {
           presets: ['react', 'es2015', 'stage-0']
         },
