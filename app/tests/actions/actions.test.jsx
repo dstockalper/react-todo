@@ -1,6 +1,12 @@
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 var expect = require('expect');
 
 var actions = require('actions');
+
+// Create mock store; a generator to create stores (1 per test requiring a mock store)
+// Pass in an array of middleware (thunk only for now)
+var createMockStore = configureMockStore([thunk]);
 
 describe('Actions', () => {
   it('should generate search text action', () => {
@@ -26,11 +32,38 @@ describe('Actions', () => {
   it('should generate addTodo action', () => {
     var action = {
       type: 'ADD_TODO',
-      text: 'some new todo'
+      todo: {
+        id: '123abc',
+        text: 'Anything we like',
+        completed: false,
+        createdAt: 0
+      }
     };
 
-    var res = actions.addTodo(action.text);
+    var res = actions.addTodo(action.todo);
     expect(res).toEqual(action);
+  });
+
+  // Let mocha know this is an asynchronous test via 'done' param.  Mocha shouldn't stop listening for assertions/errors until done() is called
+  it('should create todo and dispatch ADD_TODO', (done) => {
+    const store = createMockStore({}); // empty store
+    const todoText = 'My todo item';
+
+    // startAddTodo() is sending off a new todo to firebase, and the promise should then update our store...but we use a mock store for testing
+    store.dispatch(actions.startAddTodo(todoText)).then(() => {
+      const actions = store.getActions(); // getActions() returns an array of all the actions fired on our mock store
+
+      expect(actions[0]).toInclude({
+        type: 'ADD_TODO'
+      });
+
+      expect(actions[0].todo).toInclude({
+        text: todoText
+      });
+
+      done(); // Tell karma the test is done
+
+    }).catch(done);
   });
 
   it('should generate addTodos action', () => {

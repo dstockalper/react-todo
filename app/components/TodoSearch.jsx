@@ -34,10 +34,3 @@ export default connect(
     }
   }
 )(TodoSearch);
-
-
-store = {
-  searchText: '',
-  showCompleted: false,
-  todos: []
-}
