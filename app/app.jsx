@@ -10,7 +10,7 @@ var actions = require('actions');
 var store   = require('configureStore').configure();
 var TodoAPI = require('TodoAPI');
 
-console.log('proess.env.NODE_ENV', process.env.NODE_ENV);
+console.log('process.env.NODE_ENV', process.env.NODE_ENV);
 
 // Listen to changes on my store
 // store.subscribe(() => {

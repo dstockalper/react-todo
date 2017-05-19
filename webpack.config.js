@@ -22,7 +22,12 @@ module.exports = {
       compressor: {
         warnings: false // disable some warnings shown on terminal
       }
-    })
+    }),
+    new webpack.DefinePlugin({
+        'process.env': {
+            'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        }
+    }),
   ],
   output: { // location and name of file to be created
     path: __dirname,
