@@ -11,14 +11,16 @@ var store   = require('configureStore').configure();
 var TodoAPI = require('TodoAPI');
 
 // Listen to changes on my store
-store.subscribe(() => {
-	var state = store.getState();
-	console.log("New state", state);
-	TodoAPI.setTodos(state.todos);
-});
+// store.subscribe(() => {
+// 	var state = store.getState();
+// 	console.log("New state", state);
+// 	TodoAPI.setTodos(state.todos);
+// });
 
-var initialTodos = TodoAPI.getTodos();
-store.dispatch(actions.addTodos(initialTodos));
+// var initialTodos = TodoAPI.getTodos();
+// store.dispatch(actions.addTodos(initialTodos));
+
+store.dispatch(actions.startAddTodos());
 
 // Load foundation
 $(document).foundation();
