@@ -1,6 +1,9 @@
 var webpack = require('webpack');
 var path    = require('path');
 
+// Environment variables:  global vars set by machine's environment.  process.env obj is avail in node
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'; // Checks the environment
+
 module.exports = {
   entry: [ // Where webpack starts compiling the bundle file; the first file webpack looks in for required modules and components, and adds them to bundle.js
     'script!jquery/dist/jquery.min.js',
@@ -14,6 +17,11 @@ module.exports = {
     new webpack.ProvidePlugin({
       '$': 'jquery',
       'jQuery': 'jquery'
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compressor: {
+        warnings: false // disable some warnings shown on terminal
+      }
     })
   ],
   output: { // location and name of file to be created
@@ -53,7 +61,7 @@ module.exports = {
       path.resolve(__dirname, './node_modules/foundation-sites/scss')  // Make Sass loader aware that we have files to include from this folder
     ]
   },
-  devtool: 'cheap-module-eval-source-map' // Creates "source maps" that allows developer to debug own code and not the bundled code that was transformed by webpack
+  devtool: process.env.NODE_ENV === 'production' ? undefined : 'cheap-module-eval-source-map' // Creates "source maps" that allows developer to debug own code and not the bundled code that was transformed by webpack
 };
 
 // Due to a library bug there is a small issue in the next video. In the next lecture you'll learn how to setup source maps by setting a "devtool" property in webpack.config.js. In the lecture I set the value to "cheap-module-eval-source-map". This might cause the source maps to not work as shown in the video.
