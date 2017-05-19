@@ -1,17 +1,16 @@
 var webpack = require('webpack');
-var path    = require('path');
+var path = require('path');
 
-// Environment variables:  global vars set by machine's environment.  process.env obj is avail in node
-process.env.NODE_ENV = process.env.NODE_ENV || 'development'; // Checks the environment
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 module.exports = {
-  entry: [ // Where webpack starts compiling the bundle file; the first file webpack looks in for required modules and components, and adds them to bundle.js
+  entry: [
     'script!jquery/dist/jquery.min.js',
     'script!foundation-sites/dist/foundation.min.js',
     './app/app.jsx'
   ],
   externals: {
-    jquery: 'jQuery', // Let Foundation properly attach methods to the jQuery object
+    jquery: 'jQuery'
   },
   plugins: [
     new webpack.ProvidePlugin({
@@ -20,11 +19,11 @@ module.exports = {
     }),
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
-        warnings: false // disable some warnings shown on terminal
+        warnings: false
       }
     })
   ],
-  output: { // location and name of file to be created
+  output: {
     path: __dirname,
     filename: './public/bundle.js'
   },
@@ -32,22 +31,22 @@ module.exports = {
     root: __dirname,
     modulesDirectories: [
       'node_modules',
-      './app/components', // automatically create aliases for component modules
+      './app/components',
       './app/api'
     ],
-    alias: { // pick names for our components and tell webpack where to find those components...enables shorter require('') or import from paths
+    alias: {
       app: 'app',
       applicationStyles: 'app/styles/app.scss',
       actions: 'app/actions/actions.jsx',
       reducers: 'app/reducers/reducers.jsx',
       configureStore: 'app/store/configureStore.jsx'
     },
-    extensions: ['', '.js', '.jsx'] // file extensions to recognize
+    extensions: ['', '.js', '.jsx']
   },
   module: {
-    loaders: [ // Can be used with preprocessors (SASS, LESS) or transpilers (babel)
+    loaders: [
       {
-        loader: 'babel-loader', // Converts ES6
+        loader: 'babel-loader',
         query: {
           presets: ['react', 'es2015', 'stage-0']
         },
@@ -58,12 +57,8 @@ module.exports = {
   },
   sassLoader: {
     includePaths: [
-      path.resolve(__dirname, './node_modules/foundation-sites/scss')  // Make Sass loader aware that we have files to include from this folder
+      path.resolve(__dirname, './node_modules/foundation-sites/scss')
     ]
   },
-  devtool: process.env.NODE_ENV === 'production' ? undefined : 'cheap-module-eval-source-map' // Creates "source maps" that allows developer to debug own code and not the bundled code that was transformed by webpack
+  devtool: process.env.NODE_ENV === 'production' ? undefined : 'cheap-module-eval-source-map'
 };
-
-// Due to a library bug there is a small issue in the next video. In the next lecture you'll learn how to setup source maps by setting a "devtool" property in webpack.config.js. In the lecture I set the value to "cheap-module-eval-source-map". This might cause the source maps to not work as shown in the video.
-//
-// If you are getting this error, try setting the value to either "inline-source-map" or "eval-source-map" instead.
