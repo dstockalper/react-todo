@@ -20,7 +20,7 @@ export var Todo = React.createClass({ // Even though we're exporting the connect
     };
     return (
       <div className={todoClassName} onClick={() => {
-          dispatch(actions.toggleTodo(id));
+          dispatch(actions.startToggleTodo(id, !completed));
         }}>
         <div>
           <input type="checkbox" checked={completed}/>
