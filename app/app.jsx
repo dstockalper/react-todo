@@ -10,6 +10,9 @@ var actions = require('actions');
 var store   = require('configureStore').configure();
 var TodoAPI = require('TodoAPI');
 
+console.log('database_url', process.env.DATABASE_URL);
+console.log('api key', process.env.API_KEY);
+
 // Listen to changes on my store
 // store.subscribe(() => {
 // 	var state = store.getState();

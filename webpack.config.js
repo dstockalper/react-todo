@@ -1,8 +1,15 @@
 var webpack = require('webpack');
 var path    = require('path');
+var envFile = require('node-env-file'); // library for handling env vars
 
 // Environment variables:  global vars set by machine's environment.  process.env obj is avail in node
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'; // Checks the environment
+
+try {
+  envFile(path.join(__dirname, 'config/' + process.env.NODE_ENV + '.env'));
+} catch(e) {
+  // Do nothing
+}
 
 module.exports = {
   entry: [ // Where webpack starts compiling the bundle file; the first file webpack looks in for required modules and components, and adds them to bundle.js
@@ -25,9 +32,15 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
         'process.env': {
-            'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+            'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+            'API_KEY': JSON.stringify(process.env.API_KEY),
+            'AUTH_DOMAIN': JSON.stringify(process.env.AUTH_DOMAIN),
+            'DATABASE_URL': JSON.stringify(process.env.DATABASE_URL),
+            'PROJECT_ID': JSON.stringify(process.env.PROJECT_ID),
+            'STORAGE_BUCKET': JSON.stringify(process.env.STORAGE_BUCKET),
+            'MESSAGING_SENDER_ID': JSON.stringify(process.env.MESSAGING_SENDER_ID)
         }
-    }),
+    })
   ],
   output: { // location and name of file to be created
     path: __dirname,

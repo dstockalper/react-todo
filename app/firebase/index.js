@@ -2,12 +2,21 @@ import firebase from 'firebase';
 
 try {
   var config = {
-    apiKey: "AIzaSyC-7oxHEd1F-QNFMi3rI9N3DxC_XgzvyvY",
-    authDomain: "doug-react-todo-app.firebaseapp.com",
-    databaseURL: "https://doug-react-todo-app.firebaseio.com",
-    projectId: "doug-react-todo-app",
-    storageBucket: "doug-react-todo-app.appspot.com",
-    messagingSenderId: "758245226749"
+    apiKey: process.env.API_KEY,
+    authDomain: process.env.AUTH_DOMAIN,
+    databaseURL: process.env.DATABASE_URL,
+    projectId: process.env.PROJECT_ID,
+    storageBucket: process.env.STORAGE_BUCKET,
+    messagingSenderId: process.env.MESSAGING_SENDER_ID
+  };
+
+  var config = {
+    apiKey: 'AIzaSyCzUhzgM0OcCuSqUyaT19vKaB_kmNr_egA',
+    authDomain: 'todo-app-400eb.firebaseapp.com',
+    databaseURL: 'https://todo-app-400eb.firebaseio.com',
+    projectId: 'todo-app-400eb',
+    storageBucket: 'todo-app-400eb.appspot.com',
+    messagingSenderId: '215142164507'
   };
 
   firebase.initializeApp(config);
@@ -16,4 +25,4 @@ try {
 }
 
 export var firebaseRef = firebase.database().ref();
-export default firebase; //
+export default firebase;
