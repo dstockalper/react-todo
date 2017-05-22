@@ -1,5 +1,5 @@
 // thunk middleware allows our action generators to return fcns (where we can run async code) instead of objects.
-import firebase, {firebaseRef} from 'app/firebase/'; // don't need filename because it goes to index.js by default
+import firebase, {firebaseRef, githubProvider} from 'app/firebase/'; // don't need filename because it goes to index.js by default
 import moment from 'moment';
 
 export var setSearchText = (searchText) => {
@@ -99,3 +99,21 @@ export var startToggleTodo = (id, completed) => {
     });
   }
 };
+
+export var startLogin = () => {
+  return (dispatch, getState) => {
+    return firebase.auth().signInWithPopup(githubProvider).then((result) => {
+      console.log('Auth worked', result);
+    }, (e) => {
+      console.log('Unable to auth', e);
+    });
+  }
+}
+
+export var startLogout = () => {
+  return (dispatch, getState) => {
+    return firebase.auth().signOut().then(() => {
+      console.log('Logged out');
+    });
+  }
+}
