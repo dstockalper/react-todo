@@ -13,8 +13,10 @@ import router from 'app/router';
 // auth() returns an obj w fcns.
 firebase.auth().onAuthStateChanged((user) => { // Called every time state changes
 	if(user) {  // If user argument is present we know someone logged in. Else, they logged out.
+		store.dispatch(actions.login(user.uid));
 		hashHistory.push('/todos'); // Swap out the URL with something new
 	} else {
+		store.dispatch(actions.logout());
 		hashHistory.push('/');
 	}
 });
