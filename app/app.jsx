@@ -14,6 +14,7 @@ import router from 'app/router';
 firebase.auth().onAuthStateChanged((user) => { // Called every time state changes
 	if(user) {  // If user argument is present we know someone logged in. Else, they logged out.
 		store.dispatch(actions.login(user.uid));
+		store.dispatch(actions.startAddTodos());
 		hashHistory.push('/todos'); // Swap out the URL with something new
 	} else {
 		store.dispatch(actions.logout());
@@ -31,7 +32,7 @@ firebase.auth().onAuthStateChanged((user) => { // Called every time state change
 // var initialTodos = TodoAPI.getTodos();
 // store.dispatch(actions.addTodos(initialTodos));
 
-store.dispatch(actions.startAddTodos());
+
 
 // Load foundation
 $(document).foundation();
