@@ -45,27 +45,7 @@ describe('Actions', () => {
     expect(res).toEqual(action);
   });
 
-  // Let mocha know this is an asynchronous test via 'done' param.  Mocha shouldn't stop listening for assertions/errors until done() is called
-  it('should create todo and dispatch ADD_TODO', (done) => {
-    const store = createMockStore({}); // empty store
-    const todoText = 'My todo item';
 
-    // startAddTodo() is sending off a new todo to firebase, and the promise should then update our store...but we use a mock store for testing
-    store.dispatch(actions.startAddTodo(todoText)).then(() => {
-      const actions = store.getActions(); // getActions() returns an array of all the actions fired on our mock store
-
-      expect(actions[0]).toInclude({
-        type: 'ADD_TODO'
-      });
-
-      expect(actions[0].todo).toInclude({
-        text: todoText
-      });
-
-      done(); // Tell karma the test is done
-
-    }).catch(done);
-  });
 
   it('should generate addTodos action', () => {
     var todos = [
@@ -125,14 +105,18 @@ describe('Actions', () => {
 
   describe('Tests with firebase todos', () => {
     var testTodoRef;
+    var uid;
+    var todosRef;
 
     // mocha methods beforeEach() and afterEach()
     beforeEach((done) => {
+      firebase.auth().signInAnonymously().then((user) => {
+        uid      = user.uid;
+        todosRef = firebaseRef.child(`users/${uid}/todos`);
 
-      // Clear out the todos first
-      var todosRef = firebaseRef.child('todos');
-      todosRef.remove().then(() => {
-        testTodoRef = firebaseRef.child('todos').push();
+        return todosRef.remove();
+      }).then(() => {
+        testTodoRef = todosRef.push();
 
         testTodoRef.set({
           text: 'Something to do',
@@ -145,11 +129,11 @@ describe('Actions', () => {
     });
 
     afterEach((done) => {
-      testTodoRef.remove().then(() => done());
+      todosRef.remove().then(() => done());
     });
 
     it('should toggle todo and dispatch UPDATE_TODO action', (done) => {
-      const store = createMockStore({});
+      const store = createMockStore({auth: {uid}});
       const action = actions.startToggleTodo(testTodoRef.key, true);
 
       store.dispatch(action).then(() => {
@@ -169,7 +153,7 @@ describe('Actions', () => {
     });
 
     it('should populate todos and dispatch ADD_TODOS', (done) => {
-      const store = createMockStore({});
+      const store = createMockStore({auth: {uid}});
       const action = actions.startAddTodos();
 
       store.dispatch(action).then(() => {
@@ -181,6 +165,28 @@ describe('Actions', () => {
 
         done();
       }, done);
+    });
+
+    // Let mocha know this is an asynchronous test via 'done' param.  Mocha shouldn't stop listening for assertions/errors until done() is called
+    it('should create todo and dispatch ADD_TODO', (done) => {
+      const store = createMockStore({auth: {uid}});
+      const todoText = 'My todo item';
+
+      // startAddTodo() is sending off a new todo to firebase, and the promise should then update our store...but we use a mock store for testing
+      store.dispatch(actions.startAddTodo(todoText)).then(() => {
+        const actions = store.getActions(); // getActions() returns an array of all the actions fired on our mock store
+
+        expect(actions[0]).toInclude({
+          type: 'ADD_TODO'
+        });
+
+        expect(actions[0].todo).toInclude({
+          text: todoText
+        });
+
+        done(); // Tell karma the test is done
+
+      }).catch(done);
     });
 
   });
